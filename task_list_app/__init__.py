@@ -1,5 +1,5 @@
 from flask import (
-    Flask, render_template, url_for
+    Flask, render_template, url_for, request
 )
 from markupsafe import escape
 
@@ -14,9 +14,12 @@ def create_app():
         return render_template('greeting/hello.html')
     
     # Escaping HTML
-    @app.route('/<name>')
+    @app.route('/<name>', methods=['GET', 'POST'])
     def greet_person(name):
-        return f"Hello, {escape(name)}"
+        if request.method == 'POST':
+            return f"You are doing a POST request in the greeting section, {escape(name)}"
+        else:
+            return f"Hello, {escape(name)}!"
     # End of HUs
 
     with app.test_request_context():
