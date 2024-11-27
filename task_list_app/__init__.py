@@ -3,8 +3,36 @@ from flask import (
 )
 from markupsafe import escape
 
+tasks = [
+    {
+        'title': 'Task 1',
+        'description': 'Take the trash out',
+        'priority_value': '3',
+        'priority': 'Normal'
+    },
+    {
+        'title': 'Task 2',
+        'description': 'Feed the baby',
+        'priority_value': '1',
+        'priority': 'Urgent'
+    },
+    {
+        'title': 'Task 3',
+        'description': 'Take the dog for a walk and feed it afterwards',
+        'priority_value': '2',
+        'priority': 'High'
+    }
+]
+
+tasks2 = []
+
 def create_app():
     app = Flask(__name__)
+
+    @app.route('/')
+    def index():
+        return render_template('index.html', tasks=tasks)
+        # return render_template('index.html', tasks=tasks2)
 
     # Hidden urls -> having some fun with the users
     # a simple page that says hello
