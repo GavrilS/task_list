@@ -9,10 +9,9 @@ body {
     padding: 10px;
 }
 
-.content {
-
-}
-
-.flash {
-    width: 100%;
+.task {
+    width: 40%;
+    margin: 10px auto;
+    background-color: #008080;
+    padding: 15px;
 }
