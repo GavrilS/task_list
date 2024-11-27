@@ -3,9 +3,15 @@
 {% block content %}
     {% for task in tasks %}
         <div class="task">
-            <h3 class="task-title">{{ task.title }}</h3>
-            <p class="title-description">{{ task.description }}</p>
-            <p class="task-priority">Task Priority: {{ task.priority_value }} - {{ task.priority }}</p>
+            <div class="task-content">
+                <h3 class="task-title">{{ task.title }}</h3>
+                <p class="title-description">{{ task.description }}</p>
+                <p class="task-priority">Priority: {{ task.priority_value }} - {{ task.priority }}</p>
+            </div>
+            <div class="task-options">
+                <button>Edit</button>
+                <button>Remove</button>
+            </div>
         </div>
     {% else %}
         <h2>There are no tasks currently available!</h2>
