@@ -15,18 +15,29 @@ engine = create_engine(connection_string, echo=True)
 
 
 def create_user(connection, user_data):
-    if not validate_user_data(user_data):
+    if not validate_user_data(user_data, 'create'):
         raise Exception('User data is missing... Cannot create a new user!')
 
     query = f"INSERT INTO user(name,email,password) VALUES ({user_data['name']},{user_data['email']},{user_data['password']})"
     connection.execute(text(query))
     connection.commit()
 
-def get_user(conenction, user_data):
-    pass
+def get_user(connection, user_data):
+    if not validate_user_data(user_data, 'get'):
+        raise Exception('User data is missing... Cannot get a user without id or email!')
+    if user_data.get('id', None):
+        query = f"SELECT * FROM user WHERE id = {user_data['id']}"
+    else:
+        query = f"SELECT * FROM user WHERE email = {user_data['email']}"
+    
+    return connection.execute(text(query))
+
+def get_all_users(connection):
+    query = "SELECT * FROM user"
+    return connection.execute(text(query))    
 
 def create_task(connection, task_data):
-    if not validate_task_data(task_data):
+    if not validate_task_data(task_data, 'create'):
         raise Exception('Required task data is missing... Cannot create a new task!')
     
     query = "INSERT INTO task(title, user_id, description, priority_value, priority, created_at) " \
@@ -34,11 +45,23 @@ def create_task(connection, task_data):
     connection.execute(text(query))
     connection.commit()
 
-def get_task(conenction, task_data):
-    pass
+def get_task(connection, task_data):
+    if not validate_task_data(task_data):
+        raise Exception('Required task data is missing... Cannot create a new task!')
+    query = f"SELECT * FROM task WHERE title = {task_data['title']} and user_id = {task_data['user_id']}"
+    return connection.execute(text(query))
 
-def validate_user_data(data):
-    return data.get('name', None) and data.get('email', None) and data.get('password', None)
+def get_all_user_tasks(connection, user_id=None):
+    if not user_id:
+        raise('Cannot get tasks because a user id was not provided...')
+    query = f"SELECT * FROM task WHERE user_id = {user_id}"
+    return connection.execute(text(query))
+
+def validate_user_data(data, request_type='get'):
+    if 'get' in request_type.lower():
+        return data.get('id', None) or data.get('email', None)
+    else:
+        return data.get('name', None) and data.get('email', None) and data.get('password', None)
 
 def validate_task_data(data):
     return  data.get('title', None) and data.get('user_id', None)
