@@ -10,9 +10,10 @@ This is a project to create a task list with python 'flask'.
   - SQLAlchemy for db with mysqlconnector driver
 
 - Next steps:
-  - register/login a user
   - add the html/css for the different pages and visualize the data
   - test build functionality so far
   - blueprints and views?
+    - register/login a user
+    - create/update/delete tasks
   - test coverage
   - make the project installable?
