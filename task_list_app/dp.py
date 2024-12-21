@@ -22,6 +22,12 @@ def create_user(connection, user_data):
     connection.execute(text(query))
     connection.commit()
 
+def update_user(connection, user_data):
+    pass
+
+def delete_user(connection, user_data):
+    pass
+
 def get_user(connection, user_data):
     if not validate_user_data(user_data, 'get'):
         raise Exception('User data is missing... Cannot get a user without id or email!')
@@ -56,6 +62,12 @@ def get_all_user_tasks(connection, user_id=None):
         raise('Cannot get tasks because a user id was not provided...')
     query = f"SELECT * FROM task WHERE user_id = {user_id}"
     return connection.execute(text(query))
+
+def update_task(connection, task_data):
+    pass
+
+def delete_task(connection, task_data):
+    pass
 
 def validate_user_data(data, request_type='get'):
     if 'get' in request_type.lower():
