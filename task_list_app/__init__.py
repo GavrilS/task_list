@@ -2,6 +2,7 @@ from flask import (
     Flask, render_template, url_for, request
 )
 from markupsafe import escape
+# from . import auth
 
 tasks = [
     {
@@ -28,6 +29,8 @@ tasks2 = []
 
 def create_app():
     app = Flask(__name__)
+
+    # app.register_blueprint(auth.bp)
 
     @app.route('/')
     def index():

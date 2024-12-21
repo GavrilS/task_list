@@ -14,7 +14,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from db import engine, create_user, get_user
+# from .db import engine, create_user, get_user
+from . import db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -24,8 +25,8 @@ def load_logged_in_user():
         g.user = None
     else:
         try:
-            with engine.connect() as connection:
-                g.user = get_user(connection, {'id': session.get('user_id')})
+            with db.engine.connect() as connection:
+                g.user = db.get_user(connection, {'id': session.get('user_id')})
         except Exception as e:
             flash(f"Error retrieving the user for the current request: {e}")
             g.user = None
@@ -53,8 +54,8 @@ def register():
                 'password': password
             }
             try:
-                with engine.connect() as connection:
-                    create_user(connection, user_data)
+                with db.engine.connect() as connection:
+                    db.create_user(connection, user_data)
             except Exception as e:
                 error = f"Couldn't save the user: {e}"
             else:
@@ -76,8 +77,8 @@ def login():
             'email': email
         }
         try:
-            with engine.connect() as connection:
-                user = get_user(connection, user_data)
+            with db.engine.connect() as connection:
+                user = db.get_user(connection, user_data)
         except Exception as e:
             error = "Couldn't get user..."
             flash(error)

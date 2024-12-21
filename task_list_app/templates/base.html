@@ -2,6 +2,18 @@
 <title>{% block title %}{% endblock %} - Task List App</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+<nav>
+    <h1>Task List</h1>
+    <ul>
+        {% if g.user %}
+            <li><span>{{ g.user['name'] }}</span></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        {% else %}
+            <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+        {% endif %}
+    </ul>
+</nav>
 <section class="content">
     <header>
         {% block header %}{% endblock %}
