@@ -32,14 +32,14 @@ def get_user(connection, user_data):
     if not validate_user_data(user_data, 'get'):
         raise Exception('User data is missing... Cannot get a user without id or email!')
     if user_data.get('id', None):
-        query = f"SELECT * FROM user WHERE id = {user_data['id']}"
+        query = f"SELECT * FROM user WHERE id = {user_data['id']} AND active = 1"
     else:
-        query = f"SELECT * FROM user WHERE email = {user_data['email']}"
+        query = f"SELECT * FROM user WHERE email = {user_data['email']} AND active = 1"
     
     return connection.execute(text(query))
 
 def get_all_users(connection):
-    query = "SELECT * FROM user"
+    query = "SELECT * FROM user WHERE active = 1"
     return connection.execute(text(query))    
 
 def create_task(connection, task_data):
@@ -54,13 +54,13 @@ def create_task(connection, task_data):
 def get_task(connection, task_data):
     if not validate_task_data(task_data):
         raise Exception('Required task data is missing... Cannot create a new task!')
-    query = f"SELECT * FROM task WHERE title = {task_data['title']} and user_id = {task_data['user_id']}"
+    query = f"SELECT * FROM task WHERE title = {task_data['title']} and user_id = {task_data['user_id']} AND active = 1"
     return connection.execute(text(query))
 
 def get_all_user_tasks(connection, user_id=None):
     if not user_id:
         raise('Cannot get tasks because a user id was not provided...')
-    query = f"SELECT * FROM task WHERE user_id = {user_id}"
+    query = f"SELECT * FROM task WHERE user_id = {user_id} AND active = 1"
     return connection.execute(text(query))
 
 def update_task(connection, task_data):
