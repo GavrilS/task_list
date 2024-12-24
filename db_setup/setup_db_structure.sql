@@ -12,6 +12,8 @@ IF NOT EXISTS user(
 (100) NOT NULL UNIQUE,
     password VARCHAR
 (100) NOT NULL,
+active TINYINT DEFAULT 1,
+type VARCHAR(20) DEFAULT 'client',
     PRIMARY KEY
 (id)
 );
@@ -27,6 +29,7 @@ IF NOT EXISTS task
     priority VARCHAR
 (20) DEFAULT 'Low',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    active TINYINT DEFAULT 1,
     PRIMARY KEY
 (title, created_at, user_id),
     FOREIGN KEY
@@ -36,3 +39,6 @@ DELETE CASCADE
 );
 
 SHOW TABLES;
+
+-- Add admin user
+-- INSERT INTO user(name, email, password, type) VALUES ("admin", "admin@tl.com", "***", "admin")
