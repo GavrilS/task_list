@@ -32,14 +32,14 @@ def get_user(connection, user_data):
     if not validate_user_data(user_data, 'get'):
         raise Exception('User data is missing... Cannot get a user without id or email!')
     if user_data.get('id', None):
-        query = f"SELECT * FROM user WHERE id = {user_data['id']} AND active = 1"
+        query = f"SELECT * FROM user WHERE id = {user_data['id']} AND active = 1 AND type != 'admin'"
     else:
-        query = f"SELECT * FROM user WHERE email = {user_data['email']} AND active = 1"
+        query = f"SELECT * FROM user WHERE email = {user_data['email']} AND active = 1 AND type != 'admin'"
     
     return connection.execute(text(query))
 
 def get_all_users(connection):
-    query = "SELECT * FROM user WHERE active = 1"
+    query = "SELECT * FROM user WHERE active = 1 AND type != 'admin'"
     return connection.execute(text(query))    
 
 def create_task(connection, task_data):
