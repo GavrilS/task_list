@@ -18,7 +18,7 @@ def create_user(connection, user_data):
     if not validate_user_data(user_data, 'create'):
         raise Exception('User data is missing... Cannot create a new user!')
 
-    query = f"INSERT INTO user(name,email,password) VALUES ({user_data['name']},{user_data['email']},{user_data['password']})"
+    query = f"INSERT INTO user(name,email,password) VALUES ('{user_data['name']}','{user_data['email']}','{user_data['password']}');"
     connection.execute(text(query))
     connection.commit()
 
@@ -32,14 +32,14 @@ def get_user(connection, user_data):
     if not validate_user_data(user_data, 'get'):
         raise Exception('User data is missing... Cannot get a user without id or email!')
     if user_data.get('id', None):
-        query = f"SELECT * FROM user WHERE id = {user_data['id']} AND active = 1 AND type != 'admin'"
+        query = f"SELECT * FROM user WHERE id = {user_data['id']} AND active = 1 AND type != 'admin';"
     else:
-        query = f"SELECT * FROM user WHERE email = {user_data['email']} AND active = 1 AND type != 'admin'"
+        query = f"SELECT * FROM user WHERE email = '{user_data['email']}' AND active = 1 AND type != 'admin';"
     
     return connection.execute(text(query))
 
 def get_all_users(connection):
-    query = "SELECT * FROM user WHERE active = 1 AND type != 'admin'"
+    query = "SELECT * FROM user WHERE active = 1 AND type != 'admin';"
     return connection.execute(text(query))    
 
 def create_task(connection, task_data):
@@ -47,14 +47,14 @@ def create_task(connection, task_data):
         raise Exception('Required task data is missing... Cannot create a new task!')
     
     query = "INSERT INTO task(title, user_id, description, priority_value, priority, created_at) " \
-        f"VALUES ({task_data['title']},{task_data['user_id']},{task_data.get('description', '')},{task_data.get('priority_value', 4)},{task_data.get('priority', 'Low')},{task_data.get('create_at', datetime.now())})"
+        f"VALUES ('{task_data['title']}','{task_data['user_id']}','{task_data.get('description', '')}',{task_data.get('priority_value', 4)},'{task_data.get('priority', 'Low')}',{task_data.get('create_at', datetime.now())});"
     connection.execute(text(query))
     connection.commit()
 
 def get_task(connection, task_data):
     if not validate_task_data(task_data):
         raise Exception('Required task data is missing... Cannot create a new task!')
-    query = f"SELECT * FROM task WHERE title = {task_data['title']} and user_id = {task_data['user_id']} AND active = 1"
+    query = f"SELECT * FROM task WHERE title = '{task_data['title']}' and user_id = {task_data['user_id']} AND active = 1"
     return connection.execute(text(query))
 
 def get_all_user_tasks(connection, user_id=None):
