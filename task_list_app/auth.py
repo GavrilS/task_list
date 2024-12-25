@@ -59,7 +59,7 @@ def register():
             except Exception as e:
                 error = f"Couldn't save the user: {e}"
             else:
-                return redirect(url_for('auth/login'))
+                return redirect(url_for('auth.login'))
 
         flash(error)
     
