@@ -72,7 +72,6 @@ def login():
         password = request.form['password']
         error = None
         user = None
-
         user_data = {
             'email': email
         }
@@ -82,18 +81,17 @@ def login():
         except Exception as e:
             error = "Couldn't get user..."
             flash(error)
-        
         if user is None:
             error = 'Incorrect user...'
         elif not check_password_hash(user['password'], password):
             error = 'Incorrect password...'
-        
+
         if error is None:
             session.clear()
             session['user_id'] = user['id']
             g.user = user
-            return redirect(url_for('index'))
-        
+            return redirect(url_for('user.tasks', user_id=user['id']))
+
         flash(error)
     
     return render_template('auth/login.html')
