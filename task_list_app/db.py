@@ -36,7 +36,16 @@ def get_user(connection, user_data):
     else:
         query = f"SELECT * FROM user WHERE email = '{user_data['email']}' AND active = 1 AND type != 'admin';"
     
-    return connection.execute(text(query))
+    res = connection.execute(text(query))
+
+    user = None
+    try:
+        for row in res.mappings():
+            user = row
+    except Exception as e:
+        print(f"Exception get user with query: {query}. \n{e}")
+    
+    return user
 
 def get_all_users(connection):
     query = "SELECT * FROM user WHERE active = 1 AND type != 'admin';"
