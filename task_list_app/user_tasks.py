@@ -18,17 +18,6 @@ bp = Blueprint('user', __name__, '/user')
 
 @bp.route('/<user_id>/tasks', methods=('GET', 'POST'))
 def tasks(user_id=None):
-    if request.method == 'POST':
-        title = request.form.get('title', None)
-        description = request.form.get('description', '')
-        priority = request.form.get('priority', 'Low')
-        priority_value = request.form.get('priority_value', 4)
-        created_at = datetime.now()
-
-        error = None
-        if not title:
-            error = "Title must be populated for a task to be created!"
-
     return 'Should be showing user tasks!'
 
         
