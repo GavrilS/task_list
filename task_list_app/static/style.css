@@ -5,14 +5,65 @@ html {
 }
 
 body {
-    margin: 10px;
-    padding: 10px;
+    /* max-width: 1900px; */
+    margin: 0 auto;
+    background: white;
+    padding-bottom: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: serif;
+    color: #377ba8;
+    margin: 1rem 0;
+}
+
+a {
+    color: #377ba8;
+}
+
+a:hover {
+    color: #4192c8;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid lightgray;
+}
+
+nav {
+    background: lightblue;
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+}
+
+nav h1 {
+    flex: auto;
+    margin: 0;
+    padding: 3px;
+}
+
+nav h1 a {
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+}
+
+nav ul li a, nav ul li span, header .action {
+    display: block;
+    padding: 0.5rem;
 }
 
 .task {
     width: 40%;
     margin: 10px auto;
-    background-color: #008080;
+    background-color: lightblue;
     padding: 15px;
     border-radius: 10px;
 }
