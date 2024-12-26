@@ -7,7 +7,7 @@ def main():
     app.register_blueprint(auth.bp)
     app.register_blueprint(user_tasks.bp)
 
-    secret_uuid = uuid.uuid4()
+    secret_uuid = uuid.uuid4().hex
     app.secret_key = secret_uuid
 
     app.run(debug=True)
