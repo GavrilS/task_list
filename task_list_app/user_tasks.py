@@ -18,6 +18,16 @@ bp = Blueprint('user', __name__, '/user')
 
 @bp.route('/<user_id>/tasks', methods=('GET', 'POST'))
 def tasks(user_id=None):
-    return 'Should be showing user tasks!'
-
+    tasks = []
+    error = None
+    if not user_id:
+        error = 'Missing user id...'
+    else:
+        if request.method == 'POST':
+            pass
         
+        else:
+            with engine.connect() as connection:
+                tasks = get_all_user_tasks(connection, user_id)
+            
+            return render_template('user/tasks.html', tasks=tasks)
