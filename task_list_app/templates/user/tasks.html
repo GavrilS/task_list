@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}User Tasks{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Add a new task:</h2>
+    <form method="post">
+        <label for="title">Title</label>
+        <input name="titke" id="title" required>
+        <label for="description">Description</label>
+        <input name="description" id="description">
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority" multiple>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+        </select>
+        <input type="submit" value="Add Task">
+    </form>
+
+    {% for task in tasks %}
+        <div class="task">
+            <div class="task-content">
+                <h3 class="task-title">{{ task.title }}</h3>
+                <p class="title-description">{{ task.description }}</p>
+                <p class="task-priority">Priority: {{ task.priority_value }} - {{ task.priority }}</p>
+            </div>
+            <div class="task-options">
+                <button>Edit</button>
+                <button>Remove</button>
+            </div>
+        </div>
+    {% else %}
+        <h2>There are no tasks currently available!</h2>
+    {% endfor %}
+{% endblock %}
