@@ -43,13 +43,21 @@ def get_user(connection, user_data):
         for row in res.mappings():
             user = row
     except Exception as e:
-        print(f"Exception get user with query: {query}. \n{e}")
+        print(f"Exception get user with query: {query}. \n {e}")
     
     return user
 
 def get_all_users(connection):
     query = "SELECT * FROM user WHERE active = 1 AND type != 'admin';"
-    return connection.execute(text(query))    
+    res = connection.execute(text(query))
+    users = []
+    try:
+        for row in res.mappings():
+            users.append(row)
+    except Exception as e:
+        print(f"Exception getting all users with query: {query}. \n {e}")
+    
+    return users
 
 def create_task(connection, task_data):
     if not validate_task_data(task_data, 'create'):
@@ -64,13 +72,29 @@ def get_task(connection, task_data):
     if not validate_task_data(task_data):
         raise Exception('Required task data is missing... Cannot create a new task!')
     query = f"SELECT * FROM task WHERE title = '{task_data['title']}' and user_id = {task_data['user_id']} AND active = 1"
-    return connection.execute(text(query))
+    res = connection.execute(text(query))
+    task = None
+    try:
+        for row in res.mappings():
+            task = row
+    except Exception as e:
+        print(f"Error getting results from query: {query}. \n {e}")
+    
+    return task
 
 def get_all_user_tasks(connection, user_id=None):
     if not user_id:
         raise('Cannot get tasks because a user id was not provided...')
     query = f"SELECT * FROM task WHERE user_id = {user_id} AND active = 1"
-    return connection.execute(text(query))
+    res = connection.execute(text(query))
+    tasks = []
+    try:
+        for row in res.mappings():
+            tasks.append(row)
+    except Exception as e:
+        print(f"Error getting results from query: {query}. \n {e}")
+    
+    return tasks
 
 def update_task(connection, task_data):
     pass
