@@ -31,10 +31,26 @@ def tasks(user_id=None):
         error = 'Missing user id...'
     else:
         if request.method == 'POST':
+            print(request.form)
             title = request.form['title']
             description = request.form['description']
             priority = request.form['priority']
             priority_value = priority_mapping.get(priority, '4')
+            task_data = {
+                'title': title,
+                'description': description,
+                'user_id': user_id,
+                'priority': priority,
+                'priority_value': priority_value
+            }
+
+            with engine.connect() as connection:
+                create_task(connection, task_data)
+            
+            print(g)
+            print(g.tasks)
+
+            return render_template('user/task.html')
         
         else:
             with engine.connect() as connection:
