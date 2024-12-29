@@ -29,8 +29,16 @@
                 <p class="task-priority">Priority: {{ task.priority_value }} - {{ task.priority }}</p>
             </div>
             <div class="task-options">
-                <button>Edit</button>
-                <button>Remove</button>
+                <!-- <button>Edit</button>
+                <button>Remove</button> -->
+                <form method="put">
+                    <input type="hidden" name="task-id" id="task-id" value="{{ loop.index }}">
+                    <input type="submit" value="Edit">
+                </form>
+                <form method="delete">
+                    <input type="hidden" name="task-id" id="task-id" value="{{ loop.index }}">
+                    <input type="submit" value="Delete">
+                </form>
             </div>
         </div>
     {% else %}

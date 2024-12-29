@@ -23,7 +23,7 @@ priority_mapping = {
     'Low': 4
 }
 
-@bp.route('/<user_id>/tasks', methods=('GET', 'POST'))
+@bp.route('/<user_id>/tasks', methods=('GET', 'POST', 'PUT', 'DELETE'))
 def tasks(user_id=None):
     tasks = []
     error = None
@@ -49,7 +49,20 @@ def tasks(user_id=None):
                 tasks = get_all_user_tasks(connection, user_id)
 
             return render_template('user/tasks.html', tasks=tasks)
-        
+        elif request.method == 'PUT':
+            print('INSIDE EDIT!!!!!!!!!!!!!!!!!')
+            with engine.connect() as connection:
+                # create_task(connection, task_data)
+                tasks = get_all_user_tasks(connection, user_id)
+
+            return render_template('user/tasks.html', tasks=tasks)
+        elif request.method == 'DELETE':
+            print('INSIDE DELETE!!!!!!!!!!!!!!!!!')
+            with engine.connect() as connection:
+                # create_task(connection, task_data)
+                tasks = get_all_user_tasks(connection, user_id)
+
+            return render_template('user/tasks.html', tasks=tasks)
         else:
             with engine.connect() as connection:
                 tasks = get_all_user_tasks(connection, user_id)
