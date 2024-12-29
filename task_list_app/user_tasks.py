@@ -16,6 +16,13 @@ from .db import (
 
 bp = Blueprint('user', __name__, '/user')
 
+priority_mapping = {
+    'Critical': 1,
+    'High': 2,
+    'Normal': 3,
+    'Low': 4
+}
+
 @bp.route('/<user_id>/tasks', methods=('GET', 'POST'))
 def tasks(user_id=None):
     tasks = []
@@ -24,7 +31,10 @@ def tasks(user_id=None):
         error = 'Missing user id...'
     else:
         if request.method == 'POST':
-            pass
+            title = request.form['title']
+            description = request.form['description']
+            priority = request.form['priority']
+            priority_value = priority_mapping.get(priority, '4')
         
         else:
             with engine.connect() as connection:
