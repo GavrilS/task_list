@@ -63,8 +63,8 @@ def create_task(connection, task_data):
     if not validate_task_data(task_data):
         raise Exception('Required task data is missing... Cannot create a new task!')
     
-    query = "INSERT INTO task(title, user_id, description, priority_value, priority, created_at) " \
-        f"VALUES ('{task_data['title']}', {task_data['user_id']},'{task_data.get('description', '')}',{task_data.get('priority_value', 4)},'{task_data.get('priority', 'Low')}',{task_data.get('create_at', datetime.now())});"
+    query = "INSERT INTO task(title, user_id, description, priority_value, priority) " \
+        f"VALUES ('{task_data['title']}', {task_data['user_id']},'{task_data.get('description', '')}',{task_data.get('priority_value', 4)},'{task_data.get('priority', 'Low')}');"
     connection.execute(text(query))
     connection.commit()
 

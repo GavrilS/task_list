@@ -46,11 +46,9 @@ def tasks(user_id=None):
 
             with engine.connect() as connection:
                 create_task(connection, task_data)
-            
-            print(g)
-            print(g.tasks)
+                tasks = get_all_user_tasks(connection, user_id)
 
-            return render_template('user/task.html')
+            return render_template('user/tasks.html', tasks=tasks)
         
         else:
             with engine.connect() as connection:
