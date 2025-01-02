@@ -32,7 +32,7 @@ def tasks(user_id=None):
     else:
         if request.method == 'POST':
             print(request.form)
-            tasks = create_task()
+            tasks = add_new_task()
 
             return render_template('user/tasks.html', tasks=tasks)
         elif request.method == 'PUT':
@@ -46,12 +46,11 @@ def tasks(user_id=None):
 
             return render_template('user/tasks.html', tasks=tasks)
         else:
-            with engine.connect() as connection:
-                tasks = get_all_user_tasks(connection, user_id)
+            tasks = retrieve_user_tasks(user_id)
             
             return render_template('user/tasks.html', tasks=tasks)
 
-def create_task():
+def add_new_task():
     task_data = get_task_data()
 
     with engine.connect() as connection:
@@ -60,7 +59,7 @@ def create_task():
     
     return tasks
 
-def edit_task(user_id, task_id):
+def edit_task(user_id):
     task_data = get_task_data()
 
     with engine.connect() as connection:
@@ -72,6 +71,12 @@ def edit_task(user_id, task_id):
 def remove_task(user_id, task_id):
     with engine.connect() as connection:
         delete_task(connection, task_id)
+        tasks = get_all_user_tasks(connection, user_id)
+    
+    return tasks
+
+def retrieve_user_tasks(user_id):
+    with engine.connect() as connection:
         tasks = get_all_user_tasks(connection, user_id)
     
     return tasks
