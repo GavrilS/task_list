@@ -32,35 +32,17 @@ def tasks(user_id=None):
     else:
         if request.method == 'POST':
             print(request.form)
-            title = request.form['title']
-            description = request.form['description']
-            priority = request.form['priority']
-            priority_value = priority_mapping.get(priority, '4')
-            task_data = {
-                'title': title,
-                'description': description,
-                'user_id': user_id,
-                'priority': priority,
-                'priority_value': priority_value
-            }
-
-            with engine.connect() as connection:
-                create_task(connection, task_data)
-                tasks = get_all_user_tasks(connection, user_id)
+            tasks = create_task()
 
             return render_template('user/tasks.html', tasks=tasks)
         elif request.method == 'PUT':
             print('INSIDE EDIT!!!!!!!!!!!!!!!!!')
-            with engine.connect() as connection:
-                # create_task(connection, task_data)
-                tasks = get_all_user_tasks(connection, user_id)
+            
 
             return render_template('user/tasks.html', tasks=tasks)
         elif request.method == 'DELETE':
             print('INSIDE DELETE!!!!!!!!!!!!!!!!!')
-            with engine.connect() as connection:
-                # create_task(connection, task_data)
-                tasks = get_all_user_tasks(connection, user_id)
+            
 
             return render_template('user/tasks.html', tasks=tasks)
         else:
@@ -68,3 +50,45 @@ def tasks(user_id=None):
                 tasks = get_all_user_tasks(connection, user_id)
             
             return render_template('user/tasks.html', tasks=tasks)
+
+def create_task():
+    task_data = get_task_data()
+
+    with engine.connect() as connection:
+        create_task(connection, task_data)
+        tasks = get_all_user_tasks(connection, user_id)
+    
+    return tasks
+
+def edit_task(user_id, task_id):
+    task_data = get_task_data()
+
+    with engine.connect() as connection:
+        update_task(connection, task_data)
+        tasks = get_all_user_tasks(connection, user_id)
+    
+    return tasks
+
+def remove_task(user_id, task_id):
+    with engine.connect() as connection:
+        delete_task(connection, task_id)
+        tasks = get_all_user_tasks(connection, user_id)
+    
+    return tasks
+
+def get_task_data():
+    task_id = request.form.get('id', '')
+    title = request.form['title']
+    description = request.form['description']
+    priority = request.form['priority']
+    priority_value = priority_mapping.get(priority, '4')
+    task_data = {
+        'id': task_id,
+        'title': title,
+        'description': description,
+        'user_id': user_id,
+        'priority': priority,
+        'priority_value': priority_value
+    }
+
+    return task_data
