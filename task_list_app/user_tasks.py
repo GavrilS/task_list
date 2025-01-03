@@ -50,7 +50,7 @@ def tasks(user_id=None):
         return render_template('user/tasks.html', tasks=tasks)
 
 def add_new_task(user_id):
-    task_data = get_task_data()
+    task_data = get_task_data(user_id)
 
     with engine.connect() as connection:
         create_task(connection, task_data)
@@ -59,7 +59,7 @@ def add_new_task(user_id):
     return tasks
 
 def edit_task(user_id):
-    task_data = get_task_data()
+    task_data = get_task_data(user_id)
 
     with engine.connect() as connection:
         update_task(connection, task_data)
@@ -80,7 +80,7 @@ def retrieve_user_tasks(user_id):
     
     return tasks
 
-def get_task_data():
+def get_task_data(user_id):
     task_id = request.form.get('id', '')
     title = request.form['title']
     description = request.form['description']
