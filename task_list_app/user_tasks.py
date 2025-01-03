@@ -32,25 +32,24 @@ def tasks(user_id=None):
     else:
         if request.method == 'POST':
             print(request.form)
-            tasks = add_new_task()
+            function = request.form.get('function', '')
 
-            return render_template('user/tasks.html', tasks=tasks)
-        elif request.method == 'PUT':
-            print('INSIDE EDIT!!!!!!!!!!!!!!!!!')
-            
+            if function == 'create':
+                tasks = add_new_task(user_id)
+            elif function == 'update':
+                tasks = edit_task(user_id)
+            else:
+                task_id = request.form.get('task_id', None)
+                if task_id:
+                    tasks = remove_task(user_id, task_id)
 
-            return render_template('user/tasks.html', tasks=tasks)
-        elif request.method == 'DELETE':
-            print('INSIDE DELETE!!!!!!!!!!!!!!!!!')
-            
-
-            return render_template('user/tasks.html', tasks=tasks)
         else:
             tasks = retrieve_user_tasks(user_id)
             
-            return render_template('user/tasks.html', tasks=tasks)
+        
+        return render_template('user/tasks.html', tasks=tasks)
 
-def add_new_task():
+def add_new_task(user_id):
     task_data = get_task_data()
 
     with engine.connect() as connection:
