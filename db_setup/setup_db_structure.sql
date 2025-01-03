@@ -21,6 +21,7 @@ type VARCHAR(20) DEFAULT 'client',
 CREATE TABLE
 IF NOT EXISTS task
 (
+    id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR
 (100) NOT NULL DEFAULT '',
     user_id INT NOT NULL,
@@ -31,7 +32,7 @@ IF NOT EXISTS task
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     active TINYINT DEFAULT 1,
     PRIMARY KEY
-(title, created_at, user_id),
+(id),
     FOREIGN KEY
 (user_id) REFERENCES user
 (id) ON
