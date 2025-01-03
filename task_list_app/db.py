@@ -77,6 +77,7 @@ def get_task(connection, task_data):
     try:
         for row in res.mappings():
             task = row
+            break
     except Exception as e:
         print(f"Error getting results from query: {query}. \n {e}")
     
@@ -97,10 +98,28 @@ def get_all_user_tasks(connection, user_id=None):
     return tasks
 
 def update_task(connection, task_data):
-    pass
+    title = task_data.get('title', None)
+    user_id = task_data.get('user_id', None)
+    description = task_data.get('description')
+    priority = task_data.get('priority')
+    priority_value = task_data.get('priority_value')
+    task_id = task_data.get('task_id', None)
+    if not task_id or not user_id or not title:
+        raise('Cannot get tasks because not all data was provided...')
 
-def delete_task(connection, task_data):
-    pass
+    query = f"UPDATE task SET title = '{title}', user_id = {user_id}, description = '{description}', priority = '{priority}', priority_value = {priority_value} WHERE task_id = {task_id}"
+
+    connection.execute(text(query))
+    connection.commit()
+
+def delete_task(connection, task_id=None):
+    if not task_id:
+        raise('Cannot delete tasks because no task id was provided...')
+    
+    query = f"UPDATE task SET active = 0 WHERE task_id = {task_id}"
+
+    connection.execute(text(query))
+    connection.commit()
 
 def validate_user_data(data, request_type='get'):
     if 'get' in request_type.lower():
